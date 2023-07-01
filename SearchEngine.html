@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>网址搜索</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .search-engine-btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .custom-col {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body class="p-3">
+
+<div class="container">
+    <h2 class="text-center mt-5">网址搜索</h2>
+
+    <div class="input-group mb-3 mt-5">
+        <input type="text" id="myInput" class="form-control" placeholder="输入搜索内容.." title="请输入搜索内容">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" onclick="pasteFromClipboard()">粘贴</button>
+            <button class="btn btn-outline-secondary" type="button" onclick="myFunction()">搜索</button>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">请选择一个网址搜索</h5>
+                    <button type="button" class="close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.google.com/search?q=')">Google</button>
+                        </div>
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.bing.com/search?q=')">Bing</button>
+                        </div>
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://search.yahoo.com/search?p=')">Yahoo</button>
+                        </div>
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.duckduckgo.com/?q=')">DuckDuckGo</button>
+                        </div>
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.wikipedia.org/wiki/')">Wikipedia</button>
+                        </div>
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.x-mol.com/paper/search/q?option=')">X-Mol</button>
+                        </div>
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.pan131.com/yun/')">131云盘</button>
+                        </div>
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://lib-wpgquqvhkn6ydowlcenynv2h.thanks.sbs/s/')">Z-Lib</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function pasteFromClipboard() {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById("myInput").value = text;
+        } catch (err) {
+            console.error('Failed to read clipboard contents: ', err);
+        }
+    }
+
+    function myFunction() {
+        var input = document.getElementById("myInput").value;
+        if (input) {
+            document.getElementById("myModal").style.display = "block";
+        } else {
+            alert("请在搜索框中输入内容");
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    function search(url) {
+        var input = document.getElementById("myInput").value;
+        window.open(url + encodeURIComponent(input), "_blank");
+        closeModal();
+    }
+</script>
+
+</body>
+</html>
