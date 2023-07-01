@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>网址大合集</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .input-field {
+      width: 300px;
+      height: 40px;
+    }
+    .delete-btn {
+      cursor: pointer;
+      color: red;
+    }
+    /* 设置表格行的行间距 */
+    #url-table tr {
+      line-height: 1.5;
+    }
+    /* 设置每一列的间距 */
+    #url-table td {
+      padding: 10px 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">网址聚合</h1>
+    <form id="url-form" class="form-inline my-2">
+      <input type="text" id="url-input" class="form-control mr-2 input-field" placeholder="网址">
+      <input type="text" id="name-input" class="form-control mr-2 input-field" placeholder="名称">
+      <button type="submit" class="btn btn-primary">添加</button>
+    </form>
+    <form id="search-form" class="form-inline my-2">
+      <input type="text" id="search-input" class="form-control mr-2 input-field" placeholder="搜索">
+      <button type="submit" class="btn btn-primary">搜索</button>
+    </form>
+    <div id="error-message" class="text-danger"></div>
+    <table id="url-table" class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>名称</th>
+          <th>网址</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="url-list"></tbody>
+    </table>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script>
+    var form = document.getElementById('url-form');
+    var searchForm = document.getElementById('search-form');
+    var urlInput = document.getElementById('url-input');
+    var nameInput = document.getElementById('name-input');
+    var searchInput = document.getElementById('search-input');
+    var urlTable = document.getElementById('url-table');
+    var urlList = document.getElementById('url-list');
+    var counter = 1;
+    var urls = [];
+    var isSearchMode = false;
+
+    if (localStorage.getItem('urls')) {
+      urls = JSON.parse(localStorage.getItem('urls'));
+      renderTable(urls);
+    }
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var url = urlInput.value.trim();
+
+      if (url) {
+        if (!isValidUrl(url)) {
+          document.getElementById('error-message').textContent = '请输入有效的网址';
+          return;
+        }
+        document.getElementById('error-message').textContent = '';
+        var name = nameInput.value.trim() || url;
+        urls.push({ name: name, url: url }); 
+        renderTable(urls); 
+        localStorage.setItem('urls', JSON.stringify(urls));
+        nameInput.value = '';
+        urlInput.value = '';
+      }
+    });
+
+    searchForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      var searchTerm = searchInput.value.trim().toLowerCase();
+
+      if (searchTerm) {
+        var filteredUrls = urls.filter(function(url) {
+          return url.name.toLowerCase().includes(searchTerm) ||
+                 url.url.toLowerCase().includes(searchTerm);
+        });
+        isSearchMode = true; 
+        renderTable(filteredUrls);
+      } else {
+        isSearchMode = false;
+        renderTable(urls);
+      }
+    });
+
+    function renderTable(urlsToRender) {
+      urlList.innerHTML = ''; 
+      counter = 1;
+
+      for (var i = 0; i < urlsToRender.length; i++) {
+        var url = urlsToRender[i];
+        var row = urlList.insertRow();
+        row.dataset.index = i;
+
+        var numberCell = row.insertCell();
+        numberCell.textContent = counter++;
+
+        var nameCell = row.insertCell();
+        nameCell.textContent = url.name;
+
+        var urlCell = row.insertCell();
+        var urlLink = document.createElement('a');
+        urlLink.href = url.url;
+        urlLink.textContent = url.url;
+        urlLink.target = '_blank'; 
+
+        urlCell.appendChild(urlLink);
+
+        var deleteCell = row.insertCell();
+        var deleteLink = document.createElement('a');
+        deleteLink.textContent = '删除';
+        deleteLink.className = 'delete-btn';
+        deleteLink.addEventListener('click', function() {
+          var index = parseInt(this.parentElement.parentElement.dataset.index);
+          urls.splice(index, 1);
+          localStorage.setItem('urls', JSON.stringify(urls));
+          renderTable(urls);
+        });
+        deleteCell.appendChild(deleteLink);
+      }
+    }
+
+    function isValidUrl(string) {
+      try {
+        new URL(string);
+      } catch (_) {
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
