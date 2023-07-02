@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>网址搜索</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .search-engine-btn {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .custom-col {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body class="p-3">
+
+<div class="container">
+    <h2 class="text-center mt-5">网址搜索</h2>
+
+    <div class="input-group mb-3 mt-5">
+        <input type="text" id="myInput" class="form-control" placeholder="输入搜索内容.." title="请输入搜索内容">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" onclick="pasteFromClipboard()">粘贴</button>
+            <button class="btn btn-outline-secondary" type="button" onclick="myFunction()">搜索</button>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">请选择一个网址搜索</h5>
+                    <button type="button" class="close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- 必应 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://cn.bing.com/search?q=')">必应</button>
+                        </div>
+
+                        <!-- 谷歌 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.google.com/search?q=')">谷歌</button>
+                        </div>
+
+                        <!-- 维基 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://en.wikipedia.org/wiki/')">维基</button>
+                        </div>
+
+                        <!-- 百度 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.baidu.com/s?wd=')">百度</button>
+                        </div>
+
+                        <!-- 谷歌学术 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://scholar.google.com.hk/scholar?hl=zh-CN&as_sdt=0%2C5&q=')">谷歌学术</button>
+                        </div>
+
+                        <!-- 必应学术 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://cn.bing.com/academic/search?q=')">必应学术</button>
+                        </div>
+
+                        <!-- 百度学术 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://xueshu.baidu.com/s?wd=')">百度学术</button>
+                        </div>
+
+                        <!-- Crossref -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://search.crossref.org/?from_ui=&q=')">Crossref</button>
+                        </div>
+
+                        <!-- X-Mol -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.x-mol.com/paper/search/q?option=')">X-Mol</button>
+                        </div>
+
+                        <!-- ASME -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://asmedigitalcollection.asme.org/search-results?page=1&q=')">ASME</button>
+                        </div>
+
+                        <!-- MDPI -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.mdpi.com/search?q=')">MDPI</button>
+                        </div>
+
+                        <!-- ArXiv -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://arxiv.org/search/physics?searchtype=all&query=')">ArXiv</button>
+                        </div>
+
+                        <!-- 思源搜索 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('http://fx.sjtulib.superlib.net/s?sw=')">思源搜索</button>
+                        </div>
+
+                        <!-- 知网 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://kns.cnki.net/kns8/defaultresult/index?kw=')">知网</button>
+                        </div>
+
+                        <!-- 万方 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://s.wanfangdata.com.cn/paper?q=')">万方</button>
+                        </div>
+
+                        <!-- 维普 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('http://www.cqvip.com/main/search.aspx?k=')">维普</button>
+                        </div>
+
+                        <!-- 开心谷网盘 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('http://www.kaixingu.net/w/')">开心谷网盘</button>
+                        </div>
+
+                        <!-- 我搜云盘 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.wosouyun.com/wd/')">我搜云盘</button>
+                        </div>
+
+                        <!-- 131云盘 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.pan131.com/yun/')">131云盘</button>
+                        </div>
+
+                        <!-- 熊猫网盘 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.sopandas.cn/e/')">熊猫网盘</button>
+                        </div>
+                        <!-- 学术文献资源 -->
+                        <!-- Z-Lib -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://lib-wpgquqvhkn6ydowlcenynv2h.thanks.sbs/s/')">Z-Lib</button>
+                        </div>
+
+                        <!-- LibGen -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://libgen.rs/search.php?req=')">LibGen</button>
+                        </div>
+
+                        <!-- TaylorFranc -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.taylorfrancis.com/search?key=')">TaylorFranc</button>
+                        </div>
+
+                        <!-- ShOdH -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://shodhganga.inflibnet.ac.in:8443/jspui/simple-search?query=')">ShOdH</button>
+                        </div>
+
+                        <!-- 开发者资源 -->
+                        <!-- Pudn代码 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('http://search.pudn.com/Download?keyword=')">Pudn代码</button>
+                        </div>
+
+                        <!-- 开发者 -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.imdn.cn/searchdata/')">开发者</button>
+                        </div>
+
+                        <!-- Github -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://github.com/search?q=')">Github</button>
+                        </div>
+
+                        <!-- CSDN -->
+                        <div class="col-md-3 custom-col">
+                            <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://so.csdn.net/so/search?spm=1000.2115.3001.4498&q=')">CSDN</button>
+                        </div>
+<!-- 书格搜书 -->
+<div class="col-md-3 custom-col">
+    <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://new.shuge.org/?s=')">书格搜书</button>
+</div>
+
+<!-- 书行万里 -->
+<div class="col-md-3 custom-col">
+    <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.gpdf.net/?s=')">书行万里</button>
+</div>
+
+<!-- 图标 -->
+<div class="col-md-3 custom-col">
+    <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://www.iconfont.cn/search/index?searchType=icon&q=')">图标</button>
+</div>
+
+<!-- 国标查询 -->
+<div class="col-md-3 custom-col">
+    <button class="btn btn-primary btn-block search-engine-btn" onclick="search('https://openstd.samr.gov.cn/bzgk/gb/std_list?p.p1=0&p.p90=circulation_date&p.p91=desc&p.p2=')">国标查询</button>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function pasteFromClipboard() {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById("myInput").value = text;
+        } catch (err) {
+            console.error('Failed to read clipboard contents: ', err);
+        }
+    }
+
+    function myFunction() {
+        var input = document.getElementById("myInput").value;
+        if (input) {
+            document.getElementById("myModal").style.display = "block";
+        } else {
+            alert("请在搜索框中输入内容");
+        }
+    }
+
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    function search(url) {
+        var input = document.getElementById("myInput").value;
+        window.open(url + encodeURIComponent(input), "_blank");
+    }
+</script>
+
+</body>
+</html>
